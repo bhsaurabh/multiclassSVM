@@ -18,9 +18,12 @@ displayData(sel);
 fprintf('Program paused. Press ENTER to continue...\n');
 pause;
 
-% =============== Normalize features in data ===========================
-[X_norm, mu, sigma] = featureNormalize(X);
+% =============== Shuffle training array ==============================
+X = X(randperm(m), :);
 
+% =============== Normalize features in data ===========================
+%[X_norm, mu, sigma] = featureNormalize(X);
+X_norm = X; % getting a few NaNs :(
 % =============== Convert y into form for 1-vs-all =====================
 y_new = makeClasses(y, num_labels);
 
@@ -43,24 +46,26 @@ y_test = y_new(split2+1:end, :);
 svm_array(num_labels) = struct('X', [], 'y', [], 'kernelFunction', 'gaussianKernel', 'b', [], 'alphas', [], 'w', []);
 C_svm = 1; sigma_svm = 0.1; % additional SVM parameters
 
+
+
+
 % ============== Train SVMs ===========================================
 for i = 1: num_labels
     % training X = X_train
     % training Y = y_train(:, i)
-    fprintf(['Training SVM for detecting class: %d\n'], i);
-    svm_array(i) = svmTrain(X_train, y_train(:, i), C_svm, @(x1, x2) gaussianKernel(x1, x2, sigma_svm));
+    fprintf('Training SVM for detecting class: %d\n', i);
+    %[C_svm, sigma_svm] = dataset3Params(X_train, y_train(:, i), X_cv, y_cv(:, i));
+    svm_array(i) = svmTrain(X_norm, y_new(:, i), C_svm, @(x1, x2) gaussianKernel(x1, x2, sigma_svm));
 end
 
 
 % ============= Predict for all SVMs =================================
 % Use cross validation set
 
-   inputX = X_cv(1, :);
-   correctY = y_cv(1, :)
-   
-   pred = zeros(num_labels);
-   % predict with SVMs
-   for j = 1:length(svm_array)
-       pred(j) = svmPredict(svm_array(j), inputX)
-   end
+inputX = X_cv(1, :);
+expectedY = y_cv(1, :);
 
+pred = zeros(num_labels);
+for j = 1:length(svm_array)
+    pred(j) = svmPredict(svm_array(j), inputX);
+end
