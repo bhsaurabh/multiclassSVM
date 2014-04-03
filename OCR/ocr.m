@@ -18,12 +18,14 @@ displayData(sel);
 fprintf('Program paused. Press ENTER to continue...\n');
 pause;
 
-% =============== Shuffle training array ==============================
-X = X(randperm(m), :);
+% =============== Shuffle training array =============================
+X = X(rand_indices, :);
+y = y(rand_indices, :);
 
 % =============== Normalize features in data ===========================
 %[X_norm, mu, sigma] = featureNormalize(X);
 X_norm = X; % getting a few NaNs :(
+
 % =============== Convert y into form for 1-vs-all =====================
 y_new = makeClasses(y, num_labels);
 
@@ -55,7 +57,7 @@ for i = 1: num_labels
     % training Y = y_train(:, i)
     fprintf('Training SVM for detecting class: %d\n', i);
     %[C_svm, sigma_svm] = dataset3Params(X_train, y_train(:, i), X_cv, y_cv(:, i));
-    svm_array(i) = svmTrain(X_norm, y_new(:, i), C_svm, @(x1, x2) gaussianKernel(x1, x2, sigma_svm));
+    svm_array(i) = svmTrain(X_train, y_train(:, i), C_svm, @(x1, x2) gaussianKernel(x1, x2, sigma_svm));
 end
 
 
