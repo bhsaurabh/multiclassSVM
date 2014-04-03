@@ -73,7 +73,7 @@ else
 end
 
 % Train
-fprintf('\nTraining ...');
+%fprintf('\nTraining ...');
 dots = 12;
 while passes < max_passes,
             

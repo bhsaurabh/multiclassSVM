@@ -53,6 +53,7 @@ C_svm = 1; sigma_svm = 0.1; % additional SVM parameters
 
 % ============== Train SVMs ===========================================
 for i = 1: num_labels
+    fprintf('\nChoosing parameters and training SVMs. This might take a ling time ....\n');
     % training X = X_train
     % training Y = y_train(:, i)
     fprintf('Training SVM for detecting class: %d\n', i);
@@ -60,14 +61,31 @@ for i = 1: num_labels
     svm_array(i) = svmTrain(X_train, y_train(:, i), C_svm, @(x1, x2) gaussianKernel(x1, x2, sigma_svm));
 end
 
+fprintf('\nTraining complete... Press ENTER to continue...\n');
+save('svmArray.mat', 'svm_array');
 
 % ============= Predict for all SVMs =================================
 % Use cross validation set
-
-inputX = X_cv(1, :);
-expectedY = y_cv(1, :);
-
-pred = zeros(num_labels);
-for j = 1:length(svm_array)
-    pred(j) = svmPredict(svm_array(j), inputX);
+fprintf('\n===============\nRunning predictions on test set and deriving accuracies');
+count = 0;  % number of correctly predicted terms
+for i = 1:size(X_test, 1)
+    input = X_test(i, :);
+    expected = y_test(i, :);
+    % convert expected into a single number from the classes array
+    expectedY = 0;
+    for j = 1:num_labels
+       if expected(j) == 1 
+           expectedY = j;
+           break;
+       end
+    end
+    % check the expectedY SVM's output
+    prediction = svmPredict(svm_array(expectedY), input);
+    if prediction == 1
+        count = count + 1;
+    end
 end
+success = 100 * count/size(X_test, 1);
+format long g;
+fprintf('\nCross validation accuracy: %d %\n', success);
+format short;

@@ -28,7 +28,7 @@ best_prediction = zeros(3, 1);
 
 for C_test = range_array
    for sigma_test = range_array
-        fprintf(['Training for C : %d and sigma : %d '], C_test, sigma_test);
+        fprintf(['Training for C : %d and sigma : %d \n'], C_test, sigma_test);
         % train the SVM
         %size(X)
         %size(y)
@@ -36,7 +36,7 @@ for C_test = range_array
         predictions = svmPredict(model, Xval);
         prediction_accuracy = mean(double(predictions == yval));
         if prediction_accuracy > best_prediction(1)
-           fprintf(['Best fit C (%d) and sigma (%d) found'], C_test, sigma_test);
+           fprintf(['==> Best fit C (%d) and sigma (%d) found\n'], C_test, sigma_test);
            best_prediction(1) = prediction_accuracy;
            best_prediction(2) = C_test;
            best_prediction(3) = sigma_test;
