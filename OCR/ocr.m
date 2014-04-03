@@ -57,6 +57,8 @@ for i = 1: num_labels
     % training X = X_train
     % training Y = y_train(:, i)
     fprintf('Training SVM for detecting class: %d\n', i);
+    % Do uncomment the line below if time is not an issue
+    % Performing parameter selection automatically should vastly improve accuracy
     %[C_svm, sigma_svm] = dataset3Params(X_train, y_train(:, i), X_cv, y_cv(:, i));
     svm_array(i) = svmTrain(X_train, y_train(:, i), C_svm, @(x1, x2) gaussianKernel(x1, x2, sigma_svm));
 end
