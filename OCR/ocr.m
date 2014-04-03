@@ -66,7 +66,7 @@ save('svmArray.mat', 'svm_array');
 
 % ============= Predict for all SVMs =================================
 % Use cross validation set
-fprintf('\n===============\nRunning predictions on test set and deriving accuracies');
+fprintf('\n===============\nRunning predictions on test set and deriving accuracy');
 count = 0;  % number of correctly predicted terms
 for i = 1:size(X_test, 1)
     input = X_test(i, :);
@@ -89,8 +89,11 @@ success = 100 * count/size(X_test, 1);
 format long g;
 fprintf('\nCross validation accuracy: %d %\n', success);
 format short;
+fprintf('\nPaused... Press ENTER to continue...\n');
+pause;
 
 % ======================== Evaluate using SVM confidence ============
+fprintf('\n ====================================================== \n');
 fprintf('\n Evaluating SVM accuracuy based on confidence metrics \n');
 count = 0;  % counts number of correct results
 
@@ -111,3 +114,5 @@ for i = 1:length(X_test)
     end
     fprintf('Predicted: %d ... Actual: %d\n', pred, expectedY);
 end
+
+fprintf('\n Accuracy is: %d\n', (count/size(X_test, 1)*100));
