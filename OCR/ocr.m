@@ -89,3 +89,25 @@ success = 100 * count/size(X_test, 1);
 format long g;
 fprintf('\nCross validation accuracy: %d %\n', success);
 format short;
+
+% ======================== Evaluate using SVM confidence ============
+fprintf('\n Evaluating SVM accuracuy based on confidence metrics \n');
+count = 0;  % counts number of correct results
+
+for i = 1:length(X_test)
+    inputX = X_test(i,:);
+    expected = y_test(i, :);
+    % get numeric y
+    expectedY = 0;
+    for j = 1:num_labels
+       if expected(j) == 1 
+           expectedY = j;
+           break;
+       end
+    end
+    pred = predict(inputX, X_train, svm_array);
+    if pred == expectedY
+        count = count + 1;
+    end
+    fprintf('Predicted: %d ... Actual: %d\n', pred, expectedY);
+end
