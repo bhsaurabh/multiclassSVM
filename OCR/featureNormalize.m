@@ -1,19 +1,17 @@
 function [X_norm, mu, sigma] = featureNormalize(X)
-    % Normalises all features of X to have mean 0
-    % Also makes all features range from 0 to 1
-    
-    % Initialisations
-    X_norm = X;
-    mu = zeros(1, size(X, 2));
-    sigma = zeros(1, size(X, 2));
-    
-    % normalise all features
-    for i = 1:size(X, 2)
-       mu(i) = mean(X(:, i));
-       sigma(i) = std(X(:, i)); % standard deviation
-       for j = 1:size(X, 1)
-          % Note that j is the row number 
-          X_norm(j, i) = (X(j, i) - mu(i)) / sigma(i); 
-       end
-    end
+%FEATURENORMALIZE Normalizes the features in X 
+%   FEATURENORMALIZE(X) returns a normalized version of X where
+%   the mean value of each feature is 0 and the standard deviation
+%   is 1. This is often a good preprocessing step to do when
+%   working with learning algorithms.
+
+mu = mean(X);
+X_norm = bsxfun(@minus, X, mu);
+
+sigma = std(X_norm);
+%X_norm = bsxfun(@rdivide, X_norm, sigma);
+
+
+% ============================================================
+
 end

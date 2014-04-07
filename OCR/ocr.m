@@ -23,8 +23,8 @@ X = X(rand_indices, :);
 y = y(rand_indices, :);
 
 % =============== Normalize features in data ===========================
-%[X_norm, mu, sigma] = featureNormalize(X);
-X_norm = X; % getting a few NaNs :(
+[X_norm, mu, sigma] = featureNormalize(X);
+%X_norm = X;
 
 % =============== Convert y into form for 1-vs-all =====================
 y_new = makeClasses(y, num_labels);
