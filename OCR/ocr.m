@@ -29,6 +29,10 @@ y = y(rand_indices, :);
 % =============== Convert y into form for 1-vs-all =====================
 y_new = makeClasses(y, num_labels);
 
+% ============== Use dimensionality reduction to speed up training =====
+[U, S, X_norm] = pca(X_norm);
+pause;
+
 % =============== Split data into training, cv and test sets ===========
 % make a 60%, 20%, 20% split
 split1 = m * 0.6;
@@ -47,8 +51,6 @@ y_test = y_new(split2+1:end, :);
 % there are num_labels svm's to consider
 svm_array(num_labels) = struct('X', [], 'y', [], 'kernelFunction', 'gaussianKernel', 'b', [], 'alphas', [], 'w', []);
 C_svm = 1; sigma_svm = 0.1; % additional SVM parameters
-
-
 
 
 % ============== Train SVMs ===========================================
