@@ -19,4 +19,4 @@ After the SVMs are done classifying the result from the most confident SVM is ch
     where theta: set of parameters to train the SVM
     and inputX: column vector of an input sample onto which the kernel function has been applied
 
-Currently I am able to get an accuracy of 79.83 % on the test set, which I believe would increase if C_svm and sigma_svm are chosen automatically using dataset3Params.m (the use of this script has been omitted as it takes a good deal of time to execute)
+Currently I am able to get an accuracy of 79.83% to 82.6% on the test set, which I believe would increase if C_svm and sigma_svm are chosen automatically using dataset3Params.m (the use of this script has been omitted as it takes a good deal of time to execute)
