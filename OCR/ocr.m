@@ -54,7 +54,7 @@ C_svm = 1; sigma_svm = 0.1; % additional SVM parameters
 
 % ============== Train SVMs ===========================================
 for i = 1: num_labels
-    fprintf('\nChoosing parameters and training SVMs. This might take a ling time ....\n');
+    fprintf('\nChoosing parameters and training SVMs. This might take a long time ....\n');
     % training X = X_train
     % training Y = y_train(:, i)
     fprintf('Training SVM for detecting class: %d\n', i);
@@ -97,7 +97,7 @@ pause;
 
 % ======================== Evaluate using SVM confidence ============
 fprintf('\n ====================================================== \n');
-fprintf('\n Evaluating SVM accuracuy based on confidence metrics \n');
+fprintf('\n Evaluating SVM accuracy based on confidence metrics \n');
 count = 0;  % counts number of correct results
 
 for i = 1:length(X_test)
