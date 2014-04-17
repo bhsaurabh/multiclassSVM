@@ -1,6 +1,9 @@
 % clear screen and variable space
 clc; clear all; close all;
 
+% Open a pool of MATLAB workers
+matlabpool open 4;
+
 % a few parameters to be set
 input_layer_size = 400; % 20x20 images give 400 pixels = 400 features
 num_labels = 10;    % 10 classes to classify into
@@ -13,7 +16,7 @@ m = size(X, 1); % number of training samples
 % Visualise 100 data points randomly
 rand_indices = randperm(m);
 sel = X(rand_indices(1:100), :);
-displayData(sel);
+%displayData(sel);
 
 fprintf('Program paused. Press ENTER to continue...\n');
 pause;
@@ -53,7 +56,7 @@ C_svm = 1; sigma_svm = 0.1; % additional SVM parameters
 
 
 % ============== Train SVMs ===========================================
-for i = 1: num_labels
+parfor i = 1: num_labels
     fprintf('\nChoosing parameters and training SVMs. This might take a long time ....\n');
     % training X = X_train
     % training Y = y_train(:, i)
@@ -66,6 +69,8 @@ end
 
 fprintf('\nTraining complete... Press ENTER to continue...\n');
 save('svmArray.mat', 'svm_array');
+% Stop MATLAB workers
+matlabpool close;
 
 % ============= Predict for all SVMs =================================
 % Use cross validation set
